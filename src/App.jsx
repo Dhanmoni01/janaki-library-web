@@ -1,33 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import './App.css';
+import Navbar from './Pages/Navbar';
+import Home from './Pages/Home';
+import { useState } from 'react';
+import BookNowModal from './components/BookNowModel';
+import About from './Pages/About';
+import ServicesAndFees from './Pages/ServicesAndFees';
+import PhotoGallery from './Pages/PhotoGallery';
+import Reviews from './Pages/Reviews';
+import ContactSection from './Pages/ContactSection';
+import PricingModal from './Pages/PricingModal';
 
 function App() {
-  const [count, setCount] = useState(0)
+  // const [openBooking, setOpenBooking] = useState(false);
+  const [openBooking, setOpenBooking] = useState(false);
+  const [openPrices, setOpenPrices] = useState(false);
+  const openModal = () => setOpenBooking(true);
+  const closeModal = () => setOpenBooking(false);
 
+   const openPrice = () => setOpenPrices(true);
+  const closePrice = () => setOpenPrices(false);
+  
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Home onOpenBookNow={() => setOpenBooking(true)} onOpenPrices={openPrice} />
+      <BookNowModal open={openBooking} onClose={closeModal} />
+      <About/>
+      <ServicesAndFees/>
+      <PhotoGallery/>
+      <Reviews/>
+      <ContactSection onOpenBookNow={openModal}/>
+
+      <PricingModal open={openPrices} onClose={closePrice} onBook={openModal}/>
+  
     </>
   )
 }

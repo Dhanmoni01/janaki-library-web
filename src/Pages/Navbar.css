@@ -1,0 +1,61 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.btn{
+    background-color: #48b3f6;
+    color: #ffffff ;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+.btn:hover{
+    background-color: #8ad1f5;
+    color: #333333;
+}
+.btn:active {
+    background-color: #769daf; /* Deeper blue for click state */
+}
+.btn:disabled {
+    background-color: #d1dce1; /* Muted gray-blue for disabled */
+    color: #ffffff;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+.navbar{
+    background-color: #fffefc;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.lgo{
+    width: 100px;
+    height: 100px;
+}
+.nav-links{
+    display: flex;
+    gap: 2rem;
+}
+.nav-links li{
+    text-decoration: none;
+    color: #333333;
+    font-weight: bold;
+    padding: 0.5rem 1rem; /* Add padding for better hover effect */
+    border-radius: 10px;   /* Slightly rounded for modern look */
+    transition: background 0.2s, color 0.2s;
+}
+.nav-links li:hover{
+    background-color: #fffcf8;
+    color: #333333;
+    cursor: pointer;
+}
+.nav-links li.active{
+    background-color: #a8c1d1;
+}
