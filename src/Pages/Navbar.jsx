@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { Link as ScrollLink, animateScroll as scroll } from "react-scroll";
 import logo from "../assets/JanakiLogo.png";
+import Logo from "../components/Logo.jsx";
+import LogoStack from "../components/LogoStack.jsx";
+import LogoBookmark from "../components/LogoBookmark.jsx";
 
 export default function Navbar({ onOpenBookNow }) {
   const [open, setOpen] = useState(false);
@@ -57,11 +60,12 @@ export default function Navbar({ onOpenBookNow }) {
           className="ml-auto md:ml-0"
           aria-label="Go to top"
         >
-          <img
+          {/* <img
             src={logo}
             alt="Janaki Library"
             className="w-12 h-12 md:w-16 md:h-16 object-contain"
-          />
+          /> */}
+          <LogoBookmark/>
         </button>
 
         {/* Spacer pushes nav right on desktop */}
@@ -117,7 +121,8 @@ export default function Navbar({ onOpenBookNow }) {
         >
           {/* Panel header */}
           <div className="flex items-center justify-between p-4 border-b border-[#f6f5f2]">
-            <img src={logo} alt="Janaki Library" className="w-12 h-12 object-contain" />
+            {/* <img src={logo} alt="Janaki Library" className="w-12 h-12 object-contain" /> */}
+            <LogoBookmark/>
             <button
               type="button"
               aria-label="Close menu"
