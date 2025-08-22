@@ -1,10 +1,25 @@
 import React from "react";
+import {
+  FiFacebook,
+  FiInstagram,
+  FiTwitter,   // X (Twitter) icon
+  FiYoutube,
+  FiLinkedin,
+} from "react-icons/fi"; // NEW: icons
+
+
 
 export default function ContactSection({ onOpenBookNow }) {
-  //  Replace this with your real Google Maps embed URL once you have it.
-  // Quick way: open Google Maps → search your library → Share → Embed a map → Copy HTML → grab the src value.
-  const mapSrc =
-    "https://www.google.com/maps?q=Janaki%20Library&output=embed"; // placeholder
+  const mapSrc = "https://www.google.com/maps?q=Janaki%20Library&output=embed";
+
+  // NEW: centralize your social links (replace hrefs with real URLs)
+  const socials = [
+    { name: "Instagram", href: "https://www.instagram.com/janakilibrary/", icon: FiInstagram },
+    { name: "Facebook",  href: "https://www.instagram.com/janakilibrary/",   icon: FiFacebook },
+    { name: "X (Twitter)", href: "https://www.instagram.com/janakilibrary/", icon: FiTwitter },
+    { name: "YouTube",   href: "https://www.instagram.com/janakilibrary/", icon: FiYoutube },
+    { name: "LinkedIn",  href: "https://www.instagram.com/janakilibrary/", icon: FiLinkedin },
+  ];
 
   return (
     <section id="contact" className="bg-[#fffefc] py-12 md:py-16">
@@ -35,23 +50,45 @@ export default function ContactSection({ onOpenBookNow }) {
               </button>
             </div>
 
+            {/* NEW: Social icons row */}
+            <nav aria-label="Social media" className="mt-6">
+              <ul className="flex flex-wrap gap-3 justify-center md:justify-start">
+                {socials.map(({ name, href, icon: IconCmp }) => (
+                  <li key={name}>
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${name} — opens in a new tab`}
+                      title={name}
+                      className="group inline-flex items-center justify-center
+                                 w-11 h-11 rounded-full
+                                 border border-[#e8e5de] bg-white/80 backdrop-blur-sm
+                                 text-[#2e4050] shadow-sm
+                                 hover:shadow-md hover:bg-white
+                                 transition-all duration-200
+                                 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8ad1f5]"
+                    >
+                      <IconCmp className="w-5 h-5 transition-transform group-hover:scale-110" />
+                      <span className="sr-only">{name}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
             <div className="mt-6 text-sm text-[#6f6f6f] space-y-2">
-              {/* <p>
-                Email: <span className="text-[#2f2f2f]"></span>
-              </p> */}
-              {/* Optional phone */}
-              {/* <p>Phone: <span className="text-[#2f2f2f]">+91-XXXXXXXXXX</span></p> */}
               <p className="text-[#2f2f2f]">
                 Janaki Library<br />
                 Bishnu Rabha Path, Zoo Rd,<br />
-                Guwahati, Assam 781001
+                Guwahati, Assam 781001,<br/>
+                Contact- 81348 10159
               </p>
-              {/* View on Google Maps link */}
               <p>
                 <a
                   href="https://maps.google.com/?q=Janaki%20Library"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="underline text-[#2e4050]"
                 >
                   View on Google Maps
@@ -72,7 +109,6 @@ export default function ContactSection({ onOpenBookNow }) {
                 className="w-full h-full"
               />
             </div>
-            {/* Optional map footer */}
             <div className="px-4 py-3 border-t border-[#f6f5f2] text-sm text-[#6f6f6f]">
               Use two fingers to move the map on mobile.
             </div>

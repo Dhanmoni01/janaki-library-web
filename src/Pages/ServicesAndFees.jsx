@@ -1,6 +1,4 @@
-
-import React from "react";
-import Marquee from "react-fast-marquee";
+import React, { useEffect, useRef, useState } from "react";
 import {
   FiWind,
   FiWifi,
@@ -31,7 +29,7 @@ export default function ServicesAndFees() {
     { title: "Yearly", desc: "Only @17000₹", icon: <FiTrendingUp /> },
   ];
 
-  // Product-like card (outline + subtle shadow). Mobile: center; Desktop: left-align.
+  // Card styles (unchanged)
   const cardBase =
     "rounded-xl border border-[#e8e6e2] bg-white " +
     "shadow-[0_1px_2px_rgba(0,0,0,0.04)] md:hover:shadow-[0_6px_20px_rgba(0,0,0,0.08)] " +
@@ -50,18 +48,14 @@ export default function ServicesAndFees() {
           Our Services
         </h2>
 
-        {/* Right -> Left marquee */}
+        {/* Scrollable + auto-scrolling row (left direction) */}
         <div className="mt-6 relative">
-          <Marquee
+          <ScrollableMarquee
+            items={serviceItems}
             direction="left"
-            speed={35}
-            pauseOnHover
-            gradient
-            gradientColor={[255, 254, 252]}   // #fffefc
-            gradientWidth={50}
-            className="py-2"
-          >
-            {serviceItems.concat(serviceItems).map((item, i) => (
+            speed={0.6}                 // px per frame (~36px/s @60fps). Lower = slower
+            gradientColor="#fffefc"
+            renderItem={(item, i) => (
               <div key={`svc-${i}`} className={cardBase} aria-label={item.title}>
                 <div className="flex items-center gap-2 text-[#2f2f2f]">
                   <span className={iconWrap}>{item.icon}</span>
@@ -69,29 +63,25 @@ export default function ServicesAndFees() {
                 </div>
                 <div className="text-[12px] text-[#6f6f6f]">{item.desc}</div>
               </div>
-            ))}
-          </Marquee>
+            )}
+          />
         </div>
 
         {/* Fee Structure */}
         <section id="fees">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#333333] text-center mt-12">
-          Fee Structure
-        </h2>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#333333] text-center mt-12">
+            Fee Structure
+          </h2>
         </section>
 
-        {/* Left -> Right marquee */}
+        {/* Scrollable + auto-scrolling row (right direction) */}
         <div className="mt-6 relative">
-          <Marquee
+          <ScrollableMarquee
+            items={feeItems}
             direction="right"
-            speed={35}
-            pauseOnHover
-            gradient
-            gradientColor={[255, 254, 252]}   // #fffefc
-            gradientWidth={50}
-            className="py-2"
-          >
-            {feeItems.concat(feeItems).map((item, i) => (
+            speed={0.6}
+            gradientColor="#fffefc"
+            renderItem={(item, i) => (
               <div key={`fee-${i}`} className={cardBase} aria-label={item.title}>
                 <div className="flex items-center gap-2 text-[#2f2f2f]">
                   <span className={iconWrap}>{item.icon}</span>
@@ -101,11 +91,124 @@ export default function ServicesAndFees() {
                   {item.desc}
                 </span>
               </div>
-            ))}
-          </Marquee>
+            )}
+          />
         </div>
 
       </div>
     </section>
+  );
+}
+
+/* ===========================================
+   ScrollableMarquee: native scroll + auto loop
+   =========================================== */
+function ScrollableMarquee({
+  items,
+  renderItem,
+  direction = "left",   // "left" | "right"
+  speed = 0.5,          // px per frame
+  gradientColor = "#fffefc",
+}) {
+  const ref = useRef(null);
+  const [paused, setPaused] = useState(false);
+  const [dragging, setDragging] = useState(false);
+  const startX = useRef(0);
+  const startScroll = useRef(0);
+  const raf = useRef(0);
+
+  // Auto-scroll loop
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const dir = direction === "left" ? 1 : -1;
+
+    const tick = () => {
+      if (!paused && !dragging) {
+        el.scrollLeft += dir * speed;
+        const max = el.scrollWidth - el.clientWidth;
+
+        // loop seamlessly by resetting scrollLeft when reaching either end
+        if (el.scrollLeft >= max - 1) el.scrollLeft = 0;
+        if (el.scrollLeft <= 0) el.scrollLeft = max;
+      }
+      raf.current = requestAnimationFrame(tick);
+    };
+
+    raf.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf.current);
+  }, [paused, dragging, direction, speed]);
+
+  // Drag-to-scroll (desktop & touch)
+  const onPointerDown = (e) => {
+    const el = ref.current;
+    if (!el) return;
+    setDragging(true);
+    setPaused(true);
+    startX.current = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
+    startScroll.current = el.scrollLeft;
+    el.setPointerCapture?.(e.pointerId);
+  };
+
+  const onPointerMove = (e) => {
+    if (!dragging) return;
+    const el = ref.current;
+    const x = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
+    el.scrollLeft = startScroll.current + (startX.current - x);
+  };
+
+  const onPointerUp = (e) => {
+    const el = ref.current;
+    setDragging(false);
+    setPaused(false);
+    el?.releasePointerCapture?.(e.pointerId);
+  };
+
+  return (
+    <div className="relative">
+      {/* gradient fades (like Marquee's gradient) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-0 top-0 h-full w-10 z-10"
+        style={{
+          background: `linear-gradient(to right, ${gradientColor}, rgba(255,255,255,0))`,
+        }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute right-0 top-0 h-full w-10 z-10"
+        style={{
+          background: `linear-gradient(to left, ${gradientColor}, rgba(255,255,255,0))`,
+        }}
+      />
+
+      {/* scrollable track */}
+      <div
+        ref={ref}
+        className="relative overflow-x-auto overscroll-x-contain py-2"
+        // Optional: hide scrollbars via global CSS .no-scrollbar
+        // className="relative overflow-x-auto no-scrollbar py-2"
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => !dragging && setPaused(false)}
+        onTouchStart={() => setPaused(true)}
+        onTouchEnd={() => setPaused(false)}
+        role="region"
+        aria-label="Marquee content"
+      >
+        {/* Duplicate content 3x so looping feels seamless */}
+        <div className="flex items-stretch">
+          {[...Array(3)].map((_, block) => (
+            <div key={block} className="flex items-stretch">
+              {items.map((it, i) => renderItem(it, `${block}-${i}`))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
