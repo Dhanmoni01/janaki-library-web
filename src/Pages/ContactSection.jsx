@@ -5,7 +5,9 @@ import {
   FiTwitter,   // X (Twitter) icon
   FiYoutube,
   FiLinkedin,
-} from "react-icons/fi"; // NEW: icons
+} from "react-icons/fi";
+import { FaWhatsapp } from "react-icons/fa"; 
+import { MdDialerSip } from "react-icons/md";
 
 
 
@@ -15,10 +17,9 @@ export default function ContactSection({ onOpenBookNow }) {
   // NEW: centralize your social links (replace hrefs with real URLs)
   const socials = [
     { name: "Instagram", href: "https://www.instagram.com/janakilibrary/", icon: FiInstagram },
-    { name: "Facebook",  href: "https://www.instagram.com/janakilibrary/",   icon: FiFacebook },
-    { name: "X (Twitter)", href: "https://www.instagram.com/janakilibrary/", icon: FiTwitter },
-    { name: "YouTube",   href: "https://www.instagram.com/janakilibrary/", icon: FiYoutube },
-    { name: "LinkedIn",  href: "https://www.instagram.com/janakilibrary/", icon: FiLinkedin },
+    { name: "Whatsapp",  href: "https://wa.me/918134810159",   icon: FaWhatsapp },
+    { name: "Dialer", href: "https://www.instagram.com/janakilibrary/", icon: MdDialerSip },
+
   ];
 
   return (
