@@ -85,7 +85,7 @@ export default function Home({ onOpenBookNow, onOpenPrices }) {
               >
                 <span className="h-2 w-2 rounded-full bg-emerald-500" />
                 <span className="text-xs font-medium text-[#2e4050]">
-                  Open 6am–10pm • Guwahati
+                  Open 6.30am–10.30pm • Guwahati
                 </span>
               </motion.div>
 
