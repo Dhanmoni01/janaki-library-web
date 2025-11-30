@@ -18,7 +18,7 @@ export default function ContactSection({ onOpenBookNow }) {
   const socials = [
     { name: "Instagram", href: "https://www.instagram.com/janakilibrary/", icon: FiInstagram },
     { name: "Whatsapp",  href: "https://wa.me/918134810159",   icon: FaWhatsapp },
-    { name: "Dialer", href: "https://www.instagram.com/janakilibrary/", icon: MdDialerSip },
+    { name: "Dialer", href: "tel:8134810159", icon: MdDialerSip },
 
   ];
 
